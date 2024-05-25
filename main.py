@@ -21,7 +21,7 @@ personal_info = {
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html')
 
 
 @app.route('/resume_show.html')
@@ -83,6 +83,7 @@ def get_personal_info():
 
     else:
         return jsonify({'error': 'Name not found'}), 404
+
 
 
 if __name__ == '__main__':
