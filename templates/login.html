@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login or Register</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* 设置背景色 */
+        }
+
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container form label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .container form input[type="text"],
+        .container form input[type="password"] {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .container form button {
+            width: calc(50% - 5px);
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .container form button:nth-child(2) {
+            margin-left: 10px;
+        }
+
+        .container form button:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login or Register</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <button type="button" onclick="login()">Login</button>
+        <button type="button" onclick="register()">Register</button>
+    </form>
+</div>
+
+<script>
+    function login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        fetch('/login', {
+            method: 'POST',
+            body: JSON.stringify({username: username, password: password}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 将返回的文字显示在页面上
+                console.log(data);
+                alert(data.message);
+                localStorage.setItem('user_id', data.data);
+                window.location.href = 'resume_edit.html';
+            });
+    }
+
+    function register() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        // 将用户名和密码发送到/register端点
+        // 你需要使用适当的 AJAX 请求或者其他方法发送数据到后端
+        // 示例：
+        // fetch('/register', {
+        //   method: 'POST',
+        //   body: JSON.stringify({username: username, password: password}),
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   }
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //   console.log(data);
+        // });
+        fetch('/register', {
+            method: 'POST',
+            body: JSON.stringify({username: username, password: password}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.data);
+            });
+    }
+</script>
+
+</body>
+</html>

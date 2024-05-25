@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        .personal-info, .projects {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .personal-info p, .project p {
+            margin: 5px 0;
+        }
+
+        .project {
+            background-color: #bdc3c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .project h3 {
+            margin-bottom: 10px;
+        }
+
+        .project p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 个人信息模块 -->
+    <div class="personal-info" id="personal-info">
+        <h2>Personal Information</h2>
+        <p id="name">Name: Loading...</p>
+        <p id="gender">Gender: Loading...</p>
+        <p id="email">Email: Loading...</p>
+        <p id="student_id">Student_id: Loading...</p>
+        <p id="github">Github: Loading...</p>
+        <p id="gitlab">Gitlab: Loading...</p>
+    </div>
+
+    <!-- 个人项目集模块 -->
+    <div class="projects">
+        <h2>Projects</h2>
+        <!-- 项目列表将通过 JavaScript 填充 -->
+        <div id="project-list"></div>
+    </div>
+</div>
+<script>
+    // Function to get query parameter by name
+    let user_id = localStorage.getItem('user_id')
+    console.log("User ID from localStorage:", user_id)
+
+    // Function to fetch personal information
+    function fetchPersonalInfo(user_id) {
+        fetch(`/get_personal_info?user_id=${encodeURIComponent(user_id)}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.error) {
+                    document.getElementById('personal-info').innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    // 将返回的数据填充到个人信息模块中
+                    document.getElementById('name').innerText = 'Name: ' + data.name;
+                    document.getElementById('gender').innerText = 'Gender: ' + data.gender;
+                    document.getElementById('email').innerText = 'Email: ' + data.email;
+                    document.getElementById('student_id').innerText = 'Student_id: ' + data.student_id;
+                    document.getElementById('github').innerText = 'Github: ' + data.github;
+                    document.getElementById('gitlab').innerText = 'Gitlab: ' + data.gitlab;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Function to fetch projects
+    function fetchProjects(user_id) {
+        fetch(`/get_projects?user_id=${user_id}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('project-list').innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    let projectListHTML = '';
+                    data.forEach(project => {
+                        projectListHTML += `
+                            <div class="project">
+                                <h3>${project.title}</h3>
+                                <p>Description: ${project.description}</p>
+                                <p>Technologies Used: ${project.technologies.join(', ')}</p>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('project-list').innerHTML = projectListHTML;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Fetch the personal info and projects using the provided name
+    fetchPersonalInfo(user_id);
+    fetchProjects(user_id);
+</script>
+</body>
+</html>
