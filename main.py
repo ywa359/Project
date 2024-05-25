@@ -22,7 +22,9 @@ personal_info = {
 @app.route('/')
 def index():
     return render_template('index.html')
-
+@app.route('/resume_new.html')
+def resume_new():
+    return render_template('resume_new.html')
 
 @app.route('/resume_show.html')
 def resume_show():
@@ -71,6 +73,10 @@ def submit():
 @app.route('/resume_edit.html')
 def edit():
     return render_template('resume_edit.html')
+
+@app.route('/resume_new.html')
+def new():
+    return render_template('resume_new.html')
 
 
 @app.route('/get_personal_info', methods = ['GET'])
