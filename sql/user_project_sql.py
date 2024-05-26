@@ -23,5 +23,7 @@ def insert(user_id, title, description, start_time, end_time, git_link, online_s
 def search(user_id):
     sql = "SELECT * FROM user_project WHERE user_id = %s"
     cursor.execute(sql, (user_id,))
-    result = cursor.fetchone()
+    result = cursor.fetchall()
     return result
+
+print(search(3))

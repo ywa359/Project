@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import http_response
-from sql import user_sql, user_info_sql
+from sql import user_sql, user_info_sql, user_project_sql
 
 app = Flask(__name__)
 
@@ -90,6 +90,13 @@ def get_personal_info():
     else:
         return jsonify({'error': 'Name not found'}), 404
 
+@app.route('/get_projects_info', methods = ['GET'])
+def get_projects():
+    print(request.args)
+    user_id = request.args.get('user_id')
+    result = user_project_sql.search(user_id)
+    result=[{"title":r[2], "description":r[3], "start_time":r[4], "end_time":r[5], "git_link":r[6], "online_service":r[7], "skills":r[8]} for r in result]
+    return jsonify(result)
 
 
 if __name__ == '__main__':
