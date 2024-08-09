@@ -170,10 +170,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 alert(data.message);
                 localStorage.setItem('user_id', data.data);
-                window.location.href = 'resume_edit.html';
+                if(data.code===200) window.location.href = 'resume.html';
             });
     }
 

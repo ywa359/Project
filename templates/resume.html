@@ -158,85 +158,26 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Add button to edit -->
+                        <button class="btn btn-primary mt-3" id="editButton"
+                                onclick="enableEditing()">Edit
+                        </button>
                     </div>
                 </div>
             </div>
             <hr class="d-print-none"/>
-            <div class="skills-section px-3 px-lg-4">
-                <h2 class="h3 mb-3">Professional Skills</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-2"><span>HTML</span>
-                            <div class="progress my-1">
-                                <div class="progress-bar bg-primary"
-                                     role="progressbar" data-aos="zoom-in-right"
-                                     data-aos-delay="100"
-                                     data-aos-anchor=".skills-section"
-                                     style="width: 90%" aria-valuenow="90"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="mb-2"><span>CSS</span>
-                            <div class="progress my-1">
-                                <div class="progress-bar bg-primary"
-                                     role="progressbar" data-aos="zoom-in-right"
-                                     data-aos-delay="200"
-                                     data-aos-anchor=".skills-section"
-                                     style="width: 85%" aria-valuenow="85"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="mb-2"><span>JavaScript</span>
-                            <div class="progress my-1">
-                                <div class="progress-bar bg-primary"
-                                     role="progressbar" data-aos="zoom-in-right"
-                                     data-aos-delay="300"
-                                     data-aos-anchor=".skills-section"
-                                     style="width: 75%" aria-valuenow="75"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
+            <div class="container mt-5">
+                <div class="skills-section px-3 px-lg-4">
+                    <h2 class="h3 mb-3">Professional Skills</h2>
+                    <div id="skills-container" class="row">
+                        <!-- Skills will be added here dynamically -->
                     </div>
-                    <div class="col-md-6">
-                        <div class="mb-2"><span>Adobe Photoshop</span>
-                            <div class="progress my-1">
-                                <div class="progress-bar bg-success"
-                                     role="progressbar" data-aos="zoom-in-right"
-                                     data-aos-delay="400"
-                                     data-aos-anchor=".skills-section"
-                                     style="width: 80%" aria-valuenow="90"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="mb-2"><span>Sketch</span>
-                            <div class="progress my-1">
-                                <div class="progress-bar bg-success"
-                                     role="progressbar" data-aos="zoom-in-right"
-                                     data-aos-delay="500"
-                                     data-aos-anchor=".skills-section"
-                                     style="width: 85%" aria-valuenow="85"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="mb-2"><span>Adobe XD</span>
-                            <div class="progress my-1">
-                                <div class="progress-bar bg-success"
-                                     role="progressbar" data-aos="zoom-in-right"
-                                     data-aos-delay="600"
-                                     data-aos-anchor=".skills-section"
-                                     style="width: 70%" aria-valuenow="75"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary mt-3" onclick="addSkill()">
+                        Add Skill
+                    </button>
                 </div>
             </div>
+
             <hr class="d-print-none"/>
             <div class="work-experience-section px-3 px-lg-4">
                 <h2 class="h3 mb-4">Related Projects</h2>
@@ -415,6 +356,85 @@
                 });
             })
             .catch(error => console.error('Error:', error));
+    }
+
+    function enableEditing() {
+        // List of IDs to make editable
+        const fields = ["name", "gender", "email", "student_id", "github", "gitlab"];
+
+        fields.forEach(id => {
+            const element = document.getElementById(id);
+            const content = element.textContent.trim();
+            const input = document.createElement("input");
+
+            input.type = "text";
+            input.className = "form-control"; // Optional styling
+            input.value = content === "Loading..." ? "" : content;
+            input.id = id; // Preserve the ID
+
+            element.replaceWith(input);
+        });
+
+        // Change button to save changes
+        const button = document.getElementById("editButton");
+        button.textContent = "Save";
+        button.onclick = saveChanges;
+    }
+
+    function saveChanges() {
+        // List of IDs to save editable content
+        const fields = ["name", "gender", "email", "student_id", "github", "gitlab"];
+
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+            const content = input.value.trim();
+            const div = document.createElement("div");
+
+            div.className = "pb-1 text-secondary";
+            div.id = id;
+            div.textContent = content === "" ? "Loading..." : content;
+
+            input.replaceWith(div);
+        });
+
+        // Change button back to edit mode
+        const button = document.getElementById("editButton");
+        button.textContent = "Edit";
+        button.onclick = enableEditing;
+    }
+
+    function createSkillElement(skillName = '', skillValue = 0) {
+        return `
+                <div class="col-md-6 mb-3 skill-item">
+                    <div class="mb-2">
+                        <input type="text" class="form-control" placeholder="Skill Name" value="${skillName}">
+                        <div class="progress my-1">
+                            <div class="progress-bar bg-primary"
+                                 role="progressbar" style="width: ${skillValue}%"
+                                 aria-valuenow="${skillValue}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <input type="number" class="form-control" min="0" max="100" value="${skillValue}" onchange="updateProgress(this)">
+                        <button class="btn btn-danger mt-2" onclick="removeSkill(this)">Delete</button>
+                    </div>
+                </div>
+            `;
+    }
+
+    function addSkill() {
+        const skillsContainer = document.getElementById('skills-container');
+        skillsContainer.insertAdjacentHTML('beforeend', createSkillElement());
+    }
+
+    function removeSkill(button) {
+        const skillItem = button.closest('.skill-item');
+        skillItem.remove();
+    }
+
+    function updateProgress(input) {
+        const progressBar = input.previousElementSibling.firstElementChild;
+        const value = input.value;
+        progressBar.style.width = value + '%';
+        progressBar.setAttribute('aria-valuenow', value);
     }
 
     let user_id = localStorage.getItem('user_id')

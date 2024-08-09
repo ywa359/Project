@@ -19,3 +19,5 @@ dist/
 # 忽略 IDE 配置文件
 .vscode/
 .idea/
+
+config.ini

@@ -1,13 +1,10 @@
-import mysql.connector
+from utils.db_manager import DBManager
 
-# 连接到 MySQL 服务器
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="8270022",  # 你的 MySQL 密码
-    database="myProject"  # 你要连接的数据库名
-)
+# 获取单例DBManager实例
+db_manager = DBManager()
 
+# 获取数据库连接
+conn = db_manager.connect()
 # 创建游标对象
 cursor = conn.cursor()
 
@@ -19,8 +16,10 @@ def insert(user_id, name, gender, email_address, student_id, github, gitlab):
     cursor.execute(sql, val)
     conn.commit()
 
+
 # 更新
-def update(user_id, name=None, gender=None, email_address=None, student_id=None, github=None, gitlab=None):
+def update(user_id, name=None, gender=None, email_address=None, student_id=None,
+           github=None, gitlab=None):
     updates = []
     values = []
 
