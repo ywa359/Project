@@ -161,7 +161,7 @@
     function login() {
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
-        fetch('/login', {
+        fetch('/auth/login', {
             method: 'POST',
             body: JSON.stringify({username: username, password: password}),
             headers: {
@@ -179,7 +179,7 @@
     function register() {
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
-        fetch('/register', {
+        fetch('/auth/register', {
             method: 'POST',
             body: JSON.stringify({username: username, password: password}),
             headers: {

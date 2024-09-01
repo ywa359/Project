@@ -31,3 +31,10 @@ CREATE TABLE IF NOT EXISTS user_project (
     FOREIGN KEY (user_id) REFERENCES user_info(user_id)  -- 引用 user_info 表的 user_id 作为外键
 );
 
+CREATE TABLE IF NOT EXISTS user_skill (
+    skill_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    skill_name VARCHAR(255) NOT NULL,
+    rate INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user_info(user_id)
+);
