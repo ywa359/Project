@@ -6,7 +6,7 @@ Base = declarative_base()
 from pydantic import BaseModel
 
 
-# SQLAlchemy模型
+# SQLAlchemy model
 class UserProject(Base):
     __tablename__ = 'user_project'
     project_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -21,11 +21,12 @@ class UserProject(Base):
 
     @staticmethod
     def from_json(data):
-        user_project = UserProjectModel(**data)  # 使用 Pydantic 模型验证数据
-        return UserProject(**user_project.dict())  # 转换为 SQLAlchemy 对象
+        user_project = UserProjectModel(**data)  # use Pydantic model to test data
+        return UserProject(**user_project.dict())  # trans to SQLAlchemy object
 
 
-# Pydantic模型
+
+# Pydantic model
 class UserProjectModel(BaseModel):
     user_id: int
     title: str

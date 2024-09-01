@@ -6,7 +6,7 @@ Base = declarative_base()
 from pydantic import BaseModel
 
 
-# SQLAlchemy模型
+# SQLAlchemy model
 class UserSkill(Base):
     __tablename__ = 'user_skill'
     skill_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -16,11 +16,11 @@ class UserSkill(Base):
 
     @staticmethod
     def from_json(data):
-        user_skill = UserSkillModel(**data)  # 使用 Pydantic 模型验证数据
-        return UserSkill(**user_skill.dict())  # 转换为 SQLAlchemy 对象
+        user_skill = UserSkillModel(**data)  # use Pydantic model to test data
+        return UserSkill(**user_skill.dict())  # trans to SQLAlchemy object
 
 
-# Pydantic模型
+# Pydantic model
 class UserSkillModel(BaseModel):
     user_id: int
     skill_name: str
